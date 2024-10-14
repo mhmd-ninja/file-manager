@@ -1,5 +1,7 @@
+import { userParams } from "./settings.js";
+
 function getMessage(msgType, msgParam = '') {
-    switch (msgType) {
+    switch (msgType) {  
         case 'welcome':
             return `Welcome to the File Manager, ${msgParam}!`;
         case 'exit':
@@ -17,4 +19,33 @@ function getMessage(msgType, msgParam = '') {
     }
   }
 
-export { getMessage };
+const printMessage = (msgType, message) => {
+    if (msgType === 'error') {
+        console.error('\n' + message);
+    } else {
+        console.log('\n' + message);
+    }
+}
+const printWelcomeMsg = () => {
+    const message = getMessage('welcome', userParams.username);
+    printMessage('log', message);
+}
+const printExitMsg = () => {
+    const message = getMessage('exit', userParams.username);
+    printMessage('log', message);
+}
+const printCurrentPath = () => {
+    const message = getMessage('currentPath', userParams.currentPath);
+    printMessage('log', message);
+}
+const printFailedMessage = () => {
+    const message = getMessage('failed');
+    printMessage('error', message)
+}
+export { getMessage,
+    printWelcomeMsg,
+    printExitMsg,
+    printCurrentPath,
+    printMessage,
+    printFailedMessage
+};

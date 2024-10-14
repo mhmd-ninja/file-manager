@@ -1,22 +1,29 @@
-import { createInterface } from 'readline';
+import { createInterface } from 'readline'
 import { homedir } from 'os';
 import { userParams } from './settings.js';
-import { validateArgsLength, validateUsernameParam } from './validations.js';
-import { getMessage } from "./utils.js";
+import { validateArgsLength, validateUsernameParam } from './validations.js'
+import { printCurrentPath, printExitMsg, printWelcomeMsg} from "./utils.js";
+import { parseOperation } from './operations.js';
 
 function main({ directory, username }) {
     userParams.username = username;
     userParams.currentPath = directory;
-    console.log(getMessage('welcome', userParams.username));
-    console.log(getMessage('currentPath', userParams.currentPath));
+
+    printWelcomeMsg();
+    printCurrentPath();
+
     const readLine = createInterface({
         input: process.stdin,
         output: process.stdout
     });
 
+    readLine.on('line', (line) => {
+        parseOperation(line.split(' '));
+    })
+
     process.on('exit', () => {
         readLine.close();
-        console.log(getMessage('exit', userParams.username));
+        printExitMsg();
     })
 }
 
@@ -25,7 +32,6 @@ function init() {
         validateArgsLength(process.argv.length);
 
         const [key, value] = process.argv.slice(2)[0].split('=');
-        console.log(key)
         
         validateUsernameParam(key, value);
 
