@@ -1,11 +1,11 @@
-import {createReadStream, createWriteStream} from 'fs';
-import {resolve} from "path";
-import {createBrotliCompress, createBrotliDecompress} from 'zlib';
+import { createReadStream, createWriteStream } from 'fs';
+import { resolve } from "path";
+import { createBrotliCompress, createBrotliDecompress } from 'zlib';
 
 import { userParams} from "../../settings.js";
 import { printFailedMessage, resolvePaths } from "../../utils.js";
 
-const compressFile = (file, compressedPath, callback) => {
+const compressFile = (file, compressedPath) => {
     try {
         const filepath = resolve(userParams.currentPath, file);
         const targetPath = compressedPath.slice(-3) === '.br' ?
@@ -27,19 +27,16 @@ const compressFile = (file, compressedPath, callback) => {
                 compressStream.close();
                 writeStream.close();
 
-                console.log(`${file} successfully compressed. Compressed file's path is ${targetPath}`);
-
-                if(callback) {
-                    callback();
-                }
+                console.log(`\n ${file} successfully compressed. Compressed file's path is ${targetPath}`);
             })
     } catch (e) {
+        console.log(e);
         printFailedMessage();
     }
 }
 
 
-const decompressFile = (filename, decompressedPath, callback) => {
+const decompressFile = (filename, decompressedPath) => {
     try {
         const { filepath, targetPath } = resolvePaths(filename, decompressedPath);
 
@@ -58,14 +55,10 @@ const decompressFile = (filename, decompressedPath, callback) => {
                 decompressStream.close();
                 writeStream.close();
 
-                console.log(`${filename} successfully decompressed. Decompressed file's path is ${targetPath}`);
-
-                if(callback) {
-                    callback();
-                }
-
+                console.log(`\n ${filename} successfully decompressed. Decompressed file's path is ${targetPath}`);
             })
     } catch (e) {
+        console.log(e)
         printFailedMessage();
     }
 }
