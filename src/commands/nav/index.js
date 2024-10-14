@@ -1,4 +1,4 @@
-import { dirname, resolve } from 'path';
+import { dirname, resolve, extname } from 'path';
 import { readdirSync } from 'fs';
 
 import { userParams } from "../../settings.js";
@@ -13,7 +13,15 @@ const goToFolder = (folder) => {
 
 const printListOfDir = () => {
     const list = readdirSync(userParams.currentPath);
-    list.forEach(item => console.log(item));
+    const result = [];
+    list.forEach((item, index) => {
+        result.push({
+            Name: item,
+            Type: extname(item) === '' ? 'Directory' : 'File',
+        });
+    });
+
+    console.table(result);
 }
 
 export { goUpperDir, goToFolder, printListOfDir };
