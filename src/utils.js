@@ -1,4 +1,6 @@
 import { resolve } from "path";
+import { cpus } from 'os';
+
 import {userParams} from "./settings.js";
 
 function getMessage(msgType, msgParam = '') {
@@ -62,6 +64,16 @@ function resolvePaths(filename, path) {
     }
 }
 
+const printCPUS = () => {
+    const amount = cpus().length;
+    const result = [];
+    cpus().forEach( cpu => {
+        result.push({ model : cpu.model, speed: cpu.speed });
+    })
+    console.log(`Overall amount of CPUS is ${amount}.`)
+    console.table(result);
+}
+
 export { getMessage,
     printWelcomeMsg,
     printExitMsg,
@@ -69,5 +81,6 @@ export { getMessage,
     printMessage,
     printFailedMessage,
     printInvalidInputMessage,
-    resolvePaths
+    resolvePaths,
+    printCPUS
 };

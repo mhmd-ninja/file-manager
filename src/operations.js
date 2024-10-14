@@ -4,6 +4,7 @@ import { printCurrentPath, printInvalidInputMessage } from "./utils.js";
 import { copyFile, createFile, moveFile, printFileContent, removeFile, renameFile } from "./commands/basic/index.js";
 import { compressFile, decompressFile } from "./commands/archive/index.js";
 import { calcHash } from "./commands/hash/index.js";
+import { parseOS } from "./commands/os/index.js";
 
 function parseOperation(operation) {
     const [command, source, target] = operation;
@@ -46,7 +47,8 @@ function parseOperation(operation) {
             printCurrentPath();
             break;
         case commands.os:
-            console.log('os')
+            parseOS(source);
+            printCurrentPath();
             break;
         case commands.hash:
             calcHash(source);
