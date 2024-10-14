@@ -1,9 +1,12 @@
-import {commands } from "./settings.js";
+import { commands } from "./settings.js";
 import { goUpperDir, goToFolder, printListOfDir } from "./commands/nav/index.js";
-import { printCurrentPath } from "./utils.js";
+import { printCurrentPath, printInvalidInputMessage } from "./utils.js";
 import { copyFile, createFile, moveFile, printFileContent, removeFile, renameFile } from "./commands/basic/index.js";
+import { compressFile, decompressFile } from "./commands/archive/index.js";
+
 function parseOperation(operation) {
     const [command, source, target] = operation;
+
     switch (command) {
         case commands.up:
             goUpperDir();
@@ -44,16 +47,18 @@ function parseOperation(operation) {
             console.log('hash')
             break;
         case commands.compress:
-            console.log('compress')
+            compressFile(source, target, printCurrentPath)
             break;
         case commands.decompress:
-            console.log('decompress')
+            decompressFile(source, target, printCurrentPath)
             break;
         case commands.exit:
             process.exit(0);
             break;
         default:
-            console.log('default')
+            printInvalidInputMessage()
+            printCurrentPath();
     }
 }
+
 export { parseOperation };
